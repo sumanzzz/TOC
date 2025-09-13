@@ -1,0 +1,44 @@
+digraph DFA_at_most_3_a {
+    rankdir=LR;
+    size="12,8";
+    
+    // Clean node styling - q0, q1, q2, q3 are accepting (at most 3 a's)
+    node [shape = doublecircle, style=filled, fillcolor=lightgreen]; q0 q1 q2 q3;
+    node [shape = circle, style=filled, fillcolor=red]; q4;
+    
+    // Initial state
+    node [shape = none, label=""]; start;
+    start -> q0;
+    
+    // Simple state labels
+    q0 [label="q0"];
+    q1 [label="q1"];
+    q2 [label="q2"];
+    q3 [label="q3"];
+    q4 [label="q4"];
+    
+    // Transitions - count a's, ignore b's
+    // From q0 (0 a's seen)
+    q0 -> q1 [label="a"];
+    q0 -> q0 [label="b"];
+    
+    // From q1 (1 a seen)
+    q1 -> q2 [label="a"];
+    q1 -> q1 [label="b"];
+    
+    // From q2 (2 a's seen)
+    q2 -> q3 [label="a"];
+    q2 -> q2 [label="b"];
+    
+    // From q3 (3 a's seen) - still accepting
+    q3 -> q4 [label="a"];
+    q3 -> q3 [label="b"];
+    
+    // From q4 (4+ a's seen) - trap state
+    q4 -> q4 [label="a,b"];
+    
+    // Layout
+    {rank=same; q0; q1;}
+    {rank=same; q2; q3;}
+    {rank=same; q4;}
+}

@@ -1,0 +1,48 @@
+digraph DFA_0_odd1s_2 {
+    rankdir=LR;
+    size="16,10";
+    
+    // Clean node styling - only q4 is accepting
+    node [shape = doublecircle, style=filled, fillcolor=lightgreen]; q4;
+    node [shape = circle, style=filled, fillcolor=lightblue]; q0 q1 q2 q3;
+    node [shape = circle, style=filled, fillcolor=red]; dead;
+    
+    // Initial state
+    node [shape = none, label=""]; start;
+    start -> q0;
+    
+    // Simple state labels
+    q0 [label="q0"];
+    q1 [label="q1"];
+    q2 [label="q2"];
+    q3 [label="q3"];
+    q4 [label="q4"];
+    dead [label="dead"];
+    
+    // Phase 1: Must begin with '0'
+    // From q0 (start)
+    q0 -> q1 [label="0"];
+    q0 -> dead [label="1,2"];
+    
+    // Phase 2: After '0', track odd number of 1's
+    // From q1 (seen '0', even number of 1's so far)
+    q1 -> q2 [label="1"];     // First 1 (odd count)
+    q1 -> dead [label="0,2"]; // Can't have another 0 or end with 2 yet
+    
+    // From q2 (seen '0', odd number of 1's)
+    q2 -> q1 [label="1"];     // Even count of 1's now
+    q2 -> q4 [label="2"];     // End with 2 - ACCEPT!
+    q2 -> dead [label="0"];   // Can't have 0 in middle
+    
+    // Phase 3: After ending with '2'
+    // From q4 (ended with '2' after odd 1's) - ACCEPTING
+    q4 -> dead [label="0,1,2"]; // No more symbols allowed after final 2
+    
+    // Dead state
+    dead -> dead [label="0,1,2"];
+    
+    // Layout
+    {rank=same; q0; q1;}
+    {rank=same; q2; q3;}
+    {rank=same; q4; dead;}
+}

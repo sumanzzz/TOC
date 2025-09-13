@@ -1,0 +1,66 @@
+digraph DFA_at_least_1a_exactly_2b {
+    rankdir=LR;
+    size="14,10";
+    
+    // Clean node styling - only states with 1+ a's AND exactly 2 b's are accepting
+    node [shape = doublecircle, style=filled, fillcolor=lightgreen]; q5;
+    node [shape = circle, style=filled, fillcolor=lightblue]; q0 q1 q2 q3 q4 q6 q7 q8;
+    node [shape = circle, style=filled, fillcolor=red]; dead;
+    
+    // Initial state
+    node [shape = none, label=""]; start;
+    start -> q0;
+    
+    // Simple state labels
+    q0 [label="q0"];
+    q1 [label="q1"];
+    q2 [label="q2"];
+    q3 [label="q3"];
+    q4 [label="q4"];
+    q5 [label="q5"];
+    q6 [label="q6"];
+    q7 [label="q7"];
+    q8 [label="q8"];
+    dead [label="dead"];
+    
+    // States represent: (number of a's seen, number of b's seen)
+    // q0: (0 a's, 0 b's)
+    // q1: (0 a's, 1 b)  
+    // q2: (0 a's, 2 b's)
+    // q3: (1+ a's, 0 b's)
+    // q4: (1+ a's, 1 b)
+    // q5: (1+ a's, 2 b's) - ACCEPTING
+    // dead: (any, 3+ b's) - too many b's
+    
+    // From q0 (0 a's, 0 b's)
+    q0 -> q3 [label="a"];
+    q0 -> q1 [label="b"];
+    
+    // From q1 (0 a's, 1 b)
+    q1 -> q4 [label="a"];
+    q1 -> q2 [label="b"];
+    
+    // From q2 (0 a's, 2 b's)
+    q2 -> q5 [label="a"];
+    q2 -> dead [label="b"];
+    
+    // From q3 (1+ a's, 0 b's)
+    q3 -> q3 [label="a"];
+    q3 -> q4 [label="b"];
+    
+    // From q4 (1+ a's, 1 b)
+    q4 -> q4 [label="a"];
+    q4 -> q5 [label="b"];
+    
+    // From q5 (1+ a's, 2 b's) - ACCEPTING
+    q5 -> q5 [label="a"];
+    q5 -> dead [label="b"];
+    
+    // Dead state (3+ b's)
+    dead -> dead [label="a,b"];
+    
+    // Layout
+    {rank=same; q0; q1; q2;}
+    {rank=same; q3; q4; q5;}
+    {rank=same; dead;}
+}
