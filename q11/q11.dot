@@ -1,0 +1,38 @@
+digraph DFA_at_most_two_consecutive_b {
+    rankdir=LR;
+    size="12,8";
+    
+    // Clean node styling - q3 is rejecting (3 consecutive b's), others are accepting
+    node [shape = doublecircle, style=filled, fillcolor=lightgreen]; q0 q1 q2;
+    node [shape = circle, style=filled, fillcolor=red]; q3;
+    
+    // Initial state
+    node [shape = none, label=""]; start;
+    start -> q0 [label="start"];
+    
+    // Simple state labels
+    q0 [label="q0"];
+    q1 [label="q1"];
+    q2 [label="q2"];
+    q3 [label="q3"];
+    
+    // Transitions
+    // From q0 (no b's or reset after 'a')
+    q0 -> q0 [label="a"];   // Stay in q0 on 'a'
+    q0 -> q1 [label="b"];   // First 'b'
+    
+    // From q1 (one consecutive 'b')
+    q1 -> q0 [label="a"];   // Reset on 'a'
+    q1 -> q2 [label="b"];   // Second consecutive 'b'
+    
+    // From q2 (two consecutive 'b's) - still accepting
+    q2 -> q0 [label="a"];   // Reset on 'a'
+    q2 -> q3 [label="b"];   // Third 'b' - REJECT!
+    
+    // From q3 (three consecutive 'b's) - TRAP STATE
+    q3 -> q3 [label="a,b"];  // Stay trapped forever
+    
+    // Layout constraints
+    {rank=same; q0; q1;}
+    {rank=same; q2; q3;}
+}

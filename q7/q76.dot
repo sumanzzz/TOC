@@ -1,0 +1,29 @@
+digraph DFA_divisible_by_3 {
+    rankdir=LR;
+    
+    // Node styles - only q0 is accepting (remainder = 0)
+    node [shape = doublecircle]; q0;
+    node [shape = circle]; q1 q2;
+    
+    // Initial state arrow
+    node [shape = none]; "";
+    "" -> q0;
+    
+    // State labels
+    q0 [label="q0"];
+    q1 [label="q1"];
+    q2 [label="q2"];
+    
+    // Transitions based on remainder calculations
+    // From q0 (remainder 0)
+    q0 -> q0 [label="0"];   // 0*2 + 0 = 0, 0 mod 3 = 0
+    q0 -> q1 [label="1"];   // 0*2 + 1 = 1, 1 mod 3 = 1
+    
+    // From q1 (remainder 1)  
+    q1 -> q2 [label="0"];   // 1*2 + 0 = 2, 2 mod 3 = 2
+    q1 -> q0 [label="1"];   // 1*2 + 1 = 3, 3 mod 3 = 0
+    
+    // From q2 (remainder 2)
+    q2 -> q1 [label="0"];   // 2*2 + 0 = 4, 4 mod 3 = 1
+    q2 -> q2 [label="1"];   // 2*2 + 1 = 5, 5 mod 3 = 2
+}

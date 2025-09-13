@@ -1,0 +1,45 @@
+digraph DFA_ends_ab_or_ba {
+    rankdir=LR;
+    size="12,8";
+    
+    // Clean node styling - q3 and q4 are accepting (end with ab or ba)
+    node [shape = doublecircle, style=filled, fillcolor=lightgreen]; q3 q4;
+    node [shape = circle, style=filled, fillcolor=lightblue]; q0 q1 q2;
+    
+    // Initial state
+    node [shape = none, label=""]; start;
+    start -> q0 [label="start"];
+    
+    // Simple state labels
+    q0 [label="q0"];
+    q1 [label="q1"];
+    q2 [label="q2"];
+    q3 [label="q3"];
+    q4 [label="q4"];
+    
+    // Transitions
+    // From q0 (initial state)
+    q0 -> q1 [label="a"];   // Seen 'a' (progress toward "ab")
+    q0 -> q2 [label="b"];   // Seen 'b' (progress toward "ba")
+    
+    // From q1 (seen 'a')
+    q1 -> q1 [label="a"];   // Still just 'a'
+    q1 -> q3 [label="b"];   // Completed "ab" - ACCEPTING
+    
+    // From q2 (seen 'b')
+    q2 -> q4 [label="a"];   // Completed "ba" - ACCEPTING
+    q2 -> q2 [label="b"];   // Still just 'b'
+    
+    // From q3 (ended with "ab") - ACCEPTING
+    q3 -> q1 [label="a"];   // New 'a' (progress toward "ab")
+    q3 -> q2 [label="b"];   // New 'b' (progress toward "ba")
+    
+    // From q4 (ended with "ba") - ACCEPTING
+    q4 -> q1 [label="a"];   // New 'a' (progress toward "ab")
+    q4 -> q2 [label="b"];   // New 'b' (progress toward "ba")
+    
+    // Layout constraints
+    {rank=same; q0;}
+    {rank=same; q1; q2;}
+    {rank=same; q3; q4;}
+}

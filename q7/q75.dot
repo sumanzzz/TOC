@@ -1,0 +1,43 @@
+digraph DFA_start_01_end_11 {
+    rankdir=LR;
+    
+    // Node styles - accepting states are those that have seen "01" at start and currently end with "11"
+    node [shape = doublecircle]; q4;
+    node [shape = circle]; q0 q1 q2 q3 q5;
+    
+    // Initial state arrow
+    node [shape = none]; "";
+    "" -> q0;
+    
+    // State labels
+    q0 [label="q0"];
+    q1 [label="q1"];
+    q2 [label="q2"];
+    q3 [label="q3"];
+    q4 [label="q4"];
+    q5 [label="q5"];
+    
+    // Transitions
+    // From start state q0
+    q0 -> q5 [label="1"];    // Wrong start - go to dead state
+    q0 -> q1 [label="0"];    // Good start with 0
+    
+    // From q1 (seen "0")
+    q1 -> q5 [label="0"];    // Wrong - need "01", not "00"
+    q1 -> q2 [label="1"];    // Good - now have "01"
+    
+    // From q2 (seen "01" - now tracking for "11" at end)
+    q2 -> q2 [label="0"];    // Stay - waiting for first "1" of "11"
+    q2 -> q3 [label="1"];    // First "1" seen
+    
+    // From q3 (seen "01" and currently one "1")
+    q3 -> q2 [label="0"];    // Back to waiting for "11"
+    q3 -> q4 [label="1"];    // Second "1" - now have "11" at end
+    
+    // From q4 (seen "01" and currently ending with "11") - ACCEPTING
+    q4 -> q2 [label="0"];    // No longer ending with "11"
+    q4 -> q4 [label="1"];    // Still ending with "11" (extend the 1s)
+    
+    // From q5 (dead state - didn't start with "01")
+    q5 -> q5 [label="0,1"];  // Stay in dead state
+}

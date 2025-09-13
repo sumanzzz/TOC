@@ -1,0 +1,39 @@
+digraph DFA_even_a_even_b {
+    rankdir=LR;
+    size="12,8";
+    
+    // Clean node styling - only q0 is accepting (even a's and even b's)
+    node [shape = doublecircle, style=filled, fillcolor=lightgreen]; q0;
+    node [shape = circle, style=filled, fillcolor=lightblue]; q1 q2 q3;
+    
+    // Initial state
+    node [shape = none, label=""]; start;
+    start -> q0 [label="start"];
+    
+    // Simple state labels
+    q0 [label="q0"];
+    q1 [label="q1"]; 
+    q2 [label="q2"];
+    q3 [label="q3"];
+    
+    // Transitions - reading 'a' flips the a-parity, reading 'b' flips the b-parity
+    // From q0 (even a's, even b's) - ACCEPTING
+    q0 -> q1 [label="a"];   // odd a's, even b's
+    q0 -> q2 [label="b"];   // even a's, odd b's
+    
+    // From q1 (odd a's, even b's)
+    q1 -> q0 [label="a"];   // even a's, even b's
+    q1 -> q3 [label="b"];   // odd a's, odd b's
+    
+    // From q2 (even a's, odd b's)
+    q2 -> q3 [label="a"];   // odd a's, odd b's
+    q2 -> q0 [label="b"];   // even a's, even b's
+    
+    // From q3 (odd a's, odd b's)
+    q3 -> q2 [label="a"];   // even a's, odd b's
+    q3 -> q1 [label="b"];   // odd a's, even b's
+    
+    // Layout constraints
+    {rank=same; q0; q1;}
+    {rank=same; q2; q3;}
+}
